@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "python-api"
+version = "0.1.0"
+description = "my python api"
+authors = ["luzhongkuan <luzhongk@126.com>"]
+license = "Private"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.1"
+pymongo = "^3.12.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

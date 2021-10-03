@@ -1,0 +1,1 @@
+from mytools.clean_object import clean_object
