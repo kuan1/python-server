@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, json
-import os
-from werkzeug.exceptions import HTTPException
+import os,sys
+sys.path.append(os.getcwd())
 
-from controller.bookmark import bookmark_list, bookmark_add, bookmark_remove, bookmark_update
+from werkzeug.exceptions import HTTPException
+from controllers.bookmark import bookmark_list, bookmark_add, bookmark_remove, bookmark_update
 
 app = Flask(__name__)
 

@@ -1,0 +1,37 @@
+version: '3.6'
+
+services: 
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.2-bionic
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    volumes:
+      - ./mongo-docker/data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - frontend
+      - backend
+  flask:
+    container_name: flask
+    build: .
+    restart: always
+    environment:
+      MONGODB_HOSTNAME: mongodb
+    depends_on:
+      - mongodb
+    ports:
+      - "5001:5001"
+    networks:
+     - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+

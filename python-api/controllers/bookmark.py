@@ -2,7 +2,7 @@ from datetime import datetime
 from bson import ObjectId
 from flask import request
 
-from database import bookmark_collection
+from databases import bookmark_collection
 from mytools import clean_object, success, fail
 
 # 书签列表
