@@ -3,7 +3,7 @@ from bson import ObjectId
 from flask import request
 
 from database import bookmark_collection
-from mytools import clean_object
+from mytools import clean_object, success, fail
 
 # 书签列表
 
@@ -23,7 +23,7 @@ def bookmark_list():
     res = list(res)
     for item in res:
         item['_id'] = str(item['_id'])
-    return {'success': True, 'data': res}
+    return success(res)
 
 # 添加书签
 
@@ -32,25 +32,21 @@ def bookmark_add():
     name = request.values.get('name', f'书签{datetime.now()}')
     href = request.values.get('href', '')
     tag = request.values.get('tag', '')
-
     payload = {
         "name": name,
         "href": href,
         "tag": tag
     }
-
     res = bookmark_collection.insert_one(payload)
-    return {'success': True, 'data': str(res.inserted_id)}
+    return success(str(res.inserted_id))
 
 
-def bookmark_remove():
-    id = request.values.get('id', '')
-    res = bookmark_collection.remove(ObjectId(id))
-    return {'success': True, 'data': res}
-
+# 更新书签
 
 def bookmark_update():
     id = request.values.get('id', '')
+    if not id:
+        return fail('id Not Found')
     name = request.values.get('name')
     href = request.values.get('href')
     tag = request.values.get('tag')
@@ -59,6 +55,15 @@ def bookmark_update():
         "href": href,
         "tag": tag
     }
-    print(payload)
-    res = bookmark_collection.update({id: ObjectId(id)}, clean_object(payload))
+    res = bookmark_collection.update({'_id': ObjectId(id)}, clean_object(payload))
+    return success(res)
+
+
+# 删除书签
+
+def bookmark_remove():
+    id = request.values.get('id', '')
+    if not id:
+        return fail('id Not Found')
+    res = bookmark_collection.remove(ObjectId(id))
     return {'success': True, 'data': res}
